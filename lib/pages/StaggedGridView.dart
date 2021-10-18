@@ -70,16 +70,22 @@ class _StaggedGridViewState extends State<StaggedGridView> {
       itemCount: images.length,
       itemBuilder: (context, index) {
         return Container(
+          
           margin: EdgeInsets.only(left:5,right: 5 ),
           decoration: BoxDecoration(
+          
             color: Colors.transparent,
             borderRadius: BorderRadius.all(
+              
               Radius.circular(15),
-            ),
+            ), 
           ),
           child: ClipRRect(
+            
             borderRadius: BorderRadius.circular(10),
+            
             child: FadeInImage.memoryNetwork(
+              
               placeholder: kTransparentImage,
               image: images[index]['src']['large'],
               fit: BoxFit.cover,
@@ -88,7 +94,9 @@ class _StaggedGridViewState extends State<StaggedGridView> {
         );
       },
       staggeredTileBuilder: (int index) {
-         return StaggeredTile.count(1, index.isEven ? 1.2 : 1.8);
+         return StaggeredTile.count(1, index.isEven ? 1.9 : 1.9);
+
+         
       },
     );
   }
