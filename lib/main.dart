@@ -3,13 +3,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:rainbow/cmponents/bottomnavbar.dart';
+import 'package:rainbow/cmponents/tabbar.dart';
+import 'package:rainbow/constants/constraints.dart';
 import 'package:rainbow/pages/StaggedGridView.dart';
 import 'package:http/http.dart' as http;
 import 'package:rainbow/model/list.dart';
-import 'package:dot_navigation_bar/dot_navigation_bar.dart';
-
 Map result = {};
 Map result_final = {};
+  
 
 void main() {
   runApp(const MyApp());
@@ -49,7 +51,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
 
   fetchapi() async {
     await http.get(
@@ -81,36 +82,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    
+   
+
+    List<Widget> _widgets = <Widget>[
+      StaggedGridView(),
+      StaggedGridView(),
+      StaggedGridView(),
+    ];
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          bottom: TabBar(
-            indicatorColor: Colors.white,
-            indicatorSize: TabBarIndicatorSize.label,
-
-            // ignore: prefer_const_literals_to_create_immutables
-            tabs: [
-              Tab(
-                icon: Icon(
-                  Icons.image_outlined,
-                  color: Colors.white,
-                ),
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.portrait_outlined,
-                  color: Colors.white,
-                ),
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.collections_outlined,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
+          bottom: tab(),
           // ignore: prefer_const_literals_to_create_immutables
 
           centerTitle: true,
@@ -125,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Icon(Icons.grid_view_outlined),
           ],
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: backgroundcolor,
         // ignore: prefer_const_literals_to_create_immutables
         body: TabBarView(children: [
           StaggedGridView(),
@@ -133,29 +117,12 @@ class _MyHomePageState extends State<MyHomePage> {
           StaggedGridView(),
         ]),
         extendBody: true,
-        bottomNavigationBar: DotNavigationBar(
-          backgroundColor: Colors.black,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white,
-          dotIndicatorColor: Colors.pink,
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            print(_selectedIndex);
-            setState(() {
-              
-              _selectedIndex = index;
-            });
-          },
-          items: [
-            DotNavigationBarItem(icon: Icon(Icons.home,size: 30,)),
-            DotNavigationBarItem(icon: Icon(Icons.search,size: 30,)),
-            DotNavigationBarItem(icon: Icon(Icons.add_circle,size: 30,)),
-            DotNavigationBarItem(icon: Icon(Icons.settings,size: 30,)),
-                        
-
-          ],
-        ),
+      // ignore: prefer_const_literals_to_create_immutables
+      bottomNavigationBar: bottomnavbar(),
       ),
     );
   }
 }
+
+
+
