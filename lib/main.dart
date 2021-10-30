@@ -2,16 +2,19 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rainbow/cmponents/bottomnavbar.dart';
-import 'package:rainbow/cmponents/tabbar.dart';
 import 'package:rainbow/constants/constraints.dart';
-import 'package:rainbow/pages/StaggedGridView.dart';
 import 'package:http/http.dart' as http;
 import 'package:rainbow/model/list.dart';
+import 'cmponents/persistent_nav_bar.dart';
+
 Map result = {};
+ 
+
+
+
 Map result_final = {};
-  
 
 void main() {
   runApp(const MyApp());
@@ -51,6 +54,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int navindex =0;
+
 
   fetchapi() async {
     await http.get(
@@ -83,46 +88,30 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     
-   
-
-    List<Widget> _widgets = <Widget>[
-      StaggedGridView(),
-      StaggedGridView(),
-      StaggedGridView(),
-    ];
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          bottom: tab(),
-          // ignore: prefer_const_literals_to_create_immutables
-
-          centerTitle: true,
-          backgroundColor: Colors.black,
-          title: Text(
-            'RainBow',
-            style: TextStyle(color: Colors.white),
-          ),
-          leading: Icon(Icons.notifications_outlined),
-          // ignore: prefer_const_literals_to_create_immutables
-          actions: [
-            Icon(Icons.grid_view_outlined),
-          ],
-        ),
-        backgroundColor: backgroundcolor,
+    return Scaffold(
+      
+      appBar: AppBar(
         // ignore: prefer_const_literals_to_create_immutables
-        body: TabBarView(children: [
-          StaggedGridView(),
-          StaggedGridView(),
-          StaggedGridView(),
-        ]),
-        extendBody: true,
-      // ignore: prefer_const_literals_to_create_immutables
-      bottomNavigationBar: bottomnavbar(),
+
+        centerTitle: true,
+        backgroundColor: Colors.black,
+        title: Text(
+          'RainBow',
+          style: TextStyle(color: Colors.white),
+        ),
+        leading: Icon(Icons.notifications_outlined),
+        // ignore: prefer_const_literals_to_create_immutables
+        actions: [
+          Icon(Icons.grid_view_outlined),
+        ],
       ),
+      backgroundColor: backgroundcolor,
+      // ignore: prefer_const_literals_to_create_immutables
+      body:persistent_navbar() ,
+      resizeToAvoidBottomInset: true,
+
+      // ignore: prefer_const_literals_to_create_immutables
+      
     );
   }
 }
-
-
-

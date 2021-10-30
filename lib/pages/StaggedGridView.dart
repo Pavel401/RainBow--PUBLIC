@@ -63,6 +63,7 @@ class _StaggedGridViewState extends State<StaggedGridView> {
   @override
   Widget build(BuildContext context) {
     return StaggeredGridView.countBuilder(
+      
       controller: _scrollController,
       crossAxisCount: 2,
       crossAxisSpacing: 10,
