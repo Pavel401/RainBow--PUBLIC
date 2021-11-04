@@ -1,23 +1,24 @@
-// TODO Implement this library.// ignore: file_names
-// ignore_for_file: file_names, prefer_const_constructors
+// ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import 'package:flutter/material.dart';
+import 'package:rainbow/pages/StaggedGridView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:rainbow/model/VARIABLES.dart';
 import 'package:transparent_image/transparent_image.dart';
-
-Map output = {};
-List list1 = [];
-List list2 = [];
-
+import 'package:rainbow/main.dart';
+  List list1 = [];
+  List list2 = [];
+  Map output = {};
 class search_result extends StatefulWidget {
-  String query = " ";
-  search_result({required this.query, Key? key}) : super(key: key);
+  String val;
+  search_result({required this.val, Key? key}) : super(key: key);
 
   @override
-  _search_resultState createState() => _search_resultState();
+  State<search_result> createState() => _search_resultState();
 }
 
 class _search_resultState extends State<search_result> {
@@ -25,22 +26,22 @@ class _search_resultState extends State<search_result> {
   int page = 1;
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
-    fetchapis();
+      // TODO: implement initState
+      super.initState();
+      fetchapis();
+      _scrollController.addListener(() {
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          loadmores();
+        }
+      });
+    }
 
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        loadmores();
-      }
-    });
-  }
 
-  fetchapis() async {
+  void fetchapis() async {
     await http.get(
         Uri.parse('https://api.pexels.com/v1/search?query=' +
-            widget.query +
+            widget.val +
             '&per_page=80'),
         headers: {
           'Authorization':
@@ -55,41 +56,42 @@ class _search_resultState extends State<search_result> {
     });
   }
 
-  loadmores() async {
-    setState(() {
-      page = page + 1;
-    });
+    void loadmores() async {
+      setState(() {
+        page = page + 1;
+      });
 
-    String url = 'https://api.pexels.com/v1/search?query=' +
-        widget.query +
-        '&per_page=80&page=' +
-        page.toString();
-    print(url);
-    await http.get(Uri.parse(url), headers: {
-      'Authorization':
-          '563492ad6f91700001000001aaeacbabef4c4c6085b4432c1b2a287f'
-    }).then((value) {
-      output = jsonDecode(value.body);
-      list2 = output['photos'];
-      //print(result);
-      setState(
-        () {
+      String url = 'https://api.pexels.com/v1/search?query='+widget.val+
+          '&per_page=80&page=' +
+          page.toString();
+
+      print(url);
+      await http.get(Uri.parse(url), headers: {
+        'Authorization':
+            '563492ad6f91700001000001aaeacbabef4c4c6085b4432c1b2a287f'
+      }).then((value) {
+        output = jsonDecode(value.body);
+        list2 = output['photos'];
+        //print(result);
+        setState(() {
           list1.addAll(list2);
-        },
-      );
-      print(list1[0]);
-      print(list1.length);
-    });
-  }
+        });
+        print(list1[0]);
+        print(list1.length);
+      });
+    }
+
 
   @override
   Widget build(BuildContext context) {
+    
+
+   
     return StaggeredGridView.countBuilder(
       controller: _scrollController,
       crossAxisCount: 2,
-      crossAxisSpacing: 10,
       mainAxisSpacing: 12,
-      itemCount: images.length,
+      itemCount: list1.length,
       itemBuilder: (context, index) {
         return Container(
           margin: EdgeInsets.only(left: 5, right: 5),

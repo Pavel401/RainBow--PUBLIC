@@ -24,7 +24,6 @@ class _searchpageState extends State<searchpage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    search_result(query: _controller.text);
     _controller.text = " ";
   }
 
@@ -113,7 +112,7 @@ class _searchpageState extends State<searchpage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  search_result(query: _controller.text),
+                                  search_result(val: _controller.text),
                             ),
                           );
                         } else {
