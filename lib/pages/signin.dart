@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_single_cascade_in_expression_statements
 
 import 'package:flutter/material.dart';
 import 'package:rainbow/constants/constraints.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+
 class signin extends StatelessWidget {
   const signin({Key? key}) : super(key: key);
 
@@ -25,7 +27,23 @@ class signin extends StatelessWidget {
                   BorderSide(color: Colors.red),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+
+                 AwesomeDialog(
+                  context: context,
+                  //customHeader: Image.asset("assets/icon/icon.png"),
+                  dialogType: DialogType.ERROR,  
+                  animType: AnimType.BOTTOMSLIDE,
+                  title: 'Feature Is Still In Developement',
+                    dialogBackgroundColor: Colors.white,
+
+                  desc:
+                      'Comeback Later',
+                  btnOkOnPress: () {},
+                  btnOkColor: backgroundcolor,
+                  
+                )..show();
+              },
               icon: Icon(
                 Icons.login,
                 color: Colors.red,

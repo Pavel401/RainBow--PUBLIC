@@ -1,18 +1,18 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, avoid_single_cascade_in_expression_statements
 
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:rainbow/constants/constraints.dart';
 import 'package:http/http.dart' as http;
 import 'package:rainbow/model/VARIABLES.dart';
 import 'package:rainbow/pages/search_result.dart';
 import 'cmponents/persistent_nav_bar.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+
 Map result = {};
- 
-
-
 
 Map result_final = {};
 
@@ -54,8 +54,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int navindex =0;
-
+  var streams;
+  String status = "Offline";
+  int navindex = 0;
 
   fetchapi() async {
     await http.get(
@@ -73,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //print(images[0]);
     });
   }
+
   fetchapis() async {
     await http.get(
         Uri.parse(
@@ -89,7 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
       //print(images[0]);
     });
   }
-  
 
   @override
   void initState() {
@@ -97,15 +98,43 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
 
     super.initState();
+    streams =
+        Connectivity().onConnectivityChanged.listen((ConnectivityResult event) {
+      if (event == ConnectivityResult.none) {
+       AwesomeDialog(
+                  context: context,
+                  //customHeader: Image.asset("assets/icon/icon.png"),
+                  dialogType: DialogType.ERROR,  
+                  animType: AnimType.BOTTOMSLIDE,
+                  title: 'Offline',
+                    dialogBackgroundColor: Colors.white,
+
+                  desc:
+                      'Connect to Internet Service ',
+                  btnOkOnPress: () {},
+                  btnOkColor: backgroundcolor,
+                  
+                )..show();
+      } else {
+       
+        status = "Online";
+        print(status);
+      }
+    });
     fetchapi();
     fetchapis();
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    streams.cancel();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      
       appBar: AppBar(
         // ignore: prefer_const_literals_to_create_immutables
 
@@ -123,11 +152,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       backgroundColor: backgroundcolor,
       // ignore: prefer_const_literals_to_create_immutables
-      body:persistent_navbar() ,
+      body: persistent_navbar(),
       resizeToAvoidBottomInset: true,
 
       // ignore: prefer_const_literals_to_create_immutables
-      
     );
   }
 }

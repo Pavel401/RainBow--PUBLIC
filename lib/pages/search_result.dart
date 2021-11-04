@@ -4,15 +4,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-import 'package:rainbow/pages/StaggedGridView.dart';
-import 'package:flutter/material.dart';
+
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:rainbow/model/VARIABLES.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:rainbow/main.dart';
-  List list1 = [];
-  List list2 = [];
-  Map output = {};
+
+List list1 = [];
+List list2 = [];
+Map output = {};
+
 class search_result extends StatefulWidget {
   String val;
   search_result({required this.val, Key? key}) : super(key: key);
@@ -26,17 +25,16 @@ class _search_resultState extends State<search_result> {
   int page = 1;
   @override
   void initState() {
-      // TODO: implement initState
-      super.initState();
-      fetchapis();
-      _scrollController.addListener(() {
-        if (_scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent) {
-          loadmores();
-        }
-      });
-    }
-
+    // TODO: implement initState
+    super.initState();
+    fetchapis();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        loadmores();
+      }
+    });
+  }
 
   void fetchapis() async {
     await http.get(
@@ -56,37 +54,34 @@ class _search_resultState extends State<search_result> {
     });
   }
 
-    void loadmores() async {
+  void loadmores() async {
+    setState(() {
+      page = page + 1;
+    });
+
+    String url = 'https://api.pexels.com/v1/search?query=' +
+        widget.val +
+        '&per_page=80&page=' +
+        page.toString();
+
+    //print(url);
+    await http.get(Uri.parse(url), headers: {
+      'Authorization':
+          '563492ad6f91700001000001aaeacbabef4c4c6085b4432c1b2a287f'
+    }).then((value) {
+      output = jsonDecode(value.body);
+      list2 = output['photos'];
+      //print(result);
       setState(() {
-        page = page + 1;
+        list1.addAll(list2);
       });
-
-      String url = 'https://api.pexels.com/v1/search?query='+widget.val+
-          '&per_page=80&page=' +
-          page.toString();
-
-      print(url);
-      await http.get(Uri.parse(url), headers: {
-        'Authorization':
-            '563492ad6f91700001000001aaeacbabef4c4c6085b4432c1b2a287f'
-      }).then((value) {
-        output = jsonDecode(value.body);
-        list2 = output['photos'];
-        //print(result);
-        setState(() {
-          list1.addAll(list2);
-        });
-        print(list1[0]);
-        print(list1.length);
-      });
-    }
-
+      // print(list1[0]);
+      print(list1.length);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    
-
-   
     return StaggeredGridView.countBuilder(
       controller: _scrollController,
       crossAxisCount: 2,

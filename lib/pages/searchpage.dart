@@ -1,14 +1,13 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_single_cascade_in_expression_statements
 
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:rainbow/cmponents/internet_check_onClick.dart';
 import 'package:rainbow/constants/constraints.dart';
-import 'package:rainbow/model/VARIABLES.dart';
-import 'package:rainbow/pages/search_result.dart';
-import 'package:transparent_image/transparent_image.dart';
-import 'package:http/http.dart' as http;
+import 'package:awesome_dialog/awesome_dialog.dart';
 
+import 'package:rainbow/pages/search_result.dart';
 
 final TextEditingController _controller = TextEditingController();
 
@@ -24,7 +23,7 @@ class _searchpageState extends State<searchpage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller.text = " ";
+    _controller.text = "";
   }
 
   @override
@@ -106,7 +105,7 @@ class _searchpageState extends State<searchpage> {
                         Icons.search,
                         color: Colors.white,
                       ),
-                      onTap: () {
+                      onTap: () async {
                         if (_controller.text.isNotEmpty) {
                           Navigator.push(
                             context,
@@ -115,11 +114,35 @@ class _searchpageState extends State<searchpage> {
                                   search_result(val: _controller.text),
                             ),
                           );
-                        } else {
-                          print("enter query");
-                        }
+                        } else if (await getInternetUsingInternetConnectivity() ==
+                            false) {
+                          AwesomeDialog(
+                            context: context,
+                            //customHeader: Image.asset("assets/icon/icon.png"),
+                            dialogType: DialogType.ERROR,
+                            animType: AnimType.BOTTOMSLIDE,
+                            title: 'Offline',
 
-                        print("search clicked");
+                            desc: 'Please Connect to Internet Service ',
+                            btnOkOnPress: () {},
+                            btnOkColor: backgroundcolor,
+                            btnOkText: "Close",
+                          )..show();
+                        }
+                          else if(_controller.text.isEmpty){
+                             AwesomeDialog(
+                  context: context,
+                  //customHeader: Image.asset("assets/icon/icon.png"),
+                  dialogType: DialogType.ERROR,  
+                  animType: AnimType.BOTTOMSLIDE,
+                  title: 'No Search Value',
+              btnOkColor: backgroundcolor,
+                  desc:
+                      'Enter some search queries',
+                  btnOkOnPress: () {},
+                )..show();
+
+                          }
                       },
                     ),
                   ),
@@ -178,6 +201,3 @@ class lowerbody extends StatelessWidget {
     );
   }
 }
-
-
-
