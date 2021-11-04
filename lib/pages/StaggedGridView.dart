@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:rainbow/model/list.dart';
+import 'package:rainbow/model/VARIABLES.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:rainbow/main.dart';
 

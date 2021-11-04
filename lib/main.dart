@@ -6,9 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rainbow/constants/constraints.dart';
 import 'package:http/http.dart' as http;
-import 'package:rainbow/model/list.dart';
+import 'package:rainbow/model/VARIABLES.dart';
+import 'package:rainbow/pages/search_result.dart';
 import 'cmponents/persistent_nav_bar.dart';
-
 Map result = {};
  
 
@@ -71,9 +71,25 @@ class _MyHomePageState extends State<MyHomePage> {
         images = result['photos'];
       });
       //print(images[0]);
-      print(images.length);
     });
   }
+  fetchapis() async {
+    await http.get(
+        Uri.parse(
+            'https://api.pexels.com/v1/search?query=amoled wallpaper black dark&per_page=80'),
+        headers: {
+          'Authorization':
+              '563492ad6f91700001000001aaeacbabef4c4c6085b4432c1b2a287f'
+        }).then((value) {
+      output = jsonDecode(value.body);
+      //print(result);
+      setState(() {
+        list1 = output['photos'];
+      });
+      //print(images[0]);
+    });
+  }
+  
 
   @override
   void initState() {
@@ -81,8 +97,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
 
     super.initState();
-
     fetchapi();
+    fetchapis();
   }
 
   @override

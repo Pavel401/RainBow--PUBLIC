@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:rainbow/pages/StaggedGridView.dart';
 
 class tabbar extends StatefulWidget {
   const tabbar({ Key? key }) : super(key: key);

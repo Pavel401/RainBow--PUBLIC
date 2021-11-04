@@ -55,7 +55,7 @@ class persistent_navbar extends StatelessWidget {
  List<Widget> _buildScreens() {
       return [
       MAINPAGE(),
-      Searchpage(),
+      searchpage(),
       StaggedGridView(),
       StaggedGridView(),
       ];

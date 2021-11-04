@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:rainbow/constants/constraints.dart';
-
 class signin extends StatelessWidget {
   const signin({Key? key}) : super(key: key);
 
@@ -21,86 +20,20 @@ class signin extends StatelessWidget {
             ),
           ),
           OutlinedButton.icon(
-          style: ButtonStyle(side:MaterialStateProperty.all(BorderSide(color: Colors.red
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          )) ),
-            
-            onPressed: (){}, icon: Icon(Icons.login,color: Colors.red,), label: Text('SIGN-IN',style: TextStyle(color: Colors.red),))
+              style: ButtonStyle(
+                side: MaterialStateProperty.all(
+                  BorderSide(color: Colors.red),
+                ),
+              ),
+              onPressed: () {},
+              icon: Icon(
+                Icons.login,
+                color: Colors.red,
+              ),
+              label: Text(
+                'SIGN-IN',
+                style: TextStyle(color: Colors.red),
+              ))
         ],
       ),
     );
