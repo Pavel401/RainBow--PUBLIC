@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:rainbow/constants/constraints.dart';
 import 'package:rainbow/pages/StaggedGridView.dart';
+import 'package:rainbow/pages/categories.dart';
 import 'package:rainbow/pages/signin.dart';
 
 
@@ -61,7 +62,7 @@ backgroundColor: backgroundcolor,
           Expanded(child: TabBarView(children: [
           StaggedGridView(),
           signin(),
-            StaggedGridView(),
+            categoris(),
         ]),)
            ],
          

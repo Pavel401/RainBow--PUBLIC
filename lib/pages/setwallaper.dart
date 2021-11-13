@@ -1,14 +1,18 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:transparent_image/transparent_image.dart';
-import 'package:custom_full_image_screen/custom_full_image_screen.dart';
+import 'package:rainbow/constants/constraints.dart';
+
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:wallpaper_manager_flutter/wallpaper_manager_flutter.dart';
 
 class Wallpaper extends StatefulWidget {
   String url = " ";
+  String pourl = " ";
   String photographer = " ";
   String photographer_url = " ";
   String avg_color = " ";
@@ -21,6 +25,7 @@ class Wallpaper extends StatefulWidget {
       required this.avg_color,
       required this.width,
       required this.height,
+      required this.pourl,
       Key? key})
       : super(key: key);
 
@@ -31,6 +36,123 @@ class Wallpaper extends StatefulWidget {
 class _WallpaperState extends State<Wallpaper> {
   @override
   Widget build(BuildContext context) {
+    bool downloading = false;
+
+    Future<bool> setwallaper() async {
+      try {
+        int location =
+            WallpaperManagerFlutter.HOME_SCREEN; //can be Home/Lock Screen
+        var file =
+            await DefaultCacheManager().getSingleFile(widget.url.toString());
+        print(file.path.toString());
+
+        WallpaperManagerFlutter().setwallpaperfromFile(file, location);
+
+        downloading = false;
+        AwesomeDialog(
+          context: context,
+          //customHeader: Image.asset("assets/icon/icon.png"),
+          dialogType: DialogType.SUCCES,
+          animType: AnimType.BOTTOMSLIDE,
+          title: 'Wallpaper Updated',
+          dialogBackgroundColor: Colors.white,
+
+          btnOkOnPress: () {},
+          btnOkColor: backgroundcolor,
+        ).show();
+      } catch (e) {
+        AwesomeDialog(
+          context: context,
+          //customHeader: Image.asset("assets/icon/icon.png"),
+          dialogType: DialogType.ERROR,
+          animType: AnimType.BOTTOMSLIDE,
+          title: 'Error Setting Wallpaper',
+          dialogBackgroundColor: Colors.white,
+
+          btnOkOnPress: () {},
+          btnOkColor: backgroundcolor,
+        ).show();
+      }
+
+      return downloading;
+    }
+    Future<bool> bothscreen() async {
+      try {
+        int location =
+            WallpaperManagerFlutter.BOTH_SCREENS; //can be Home/Lock Screen
+        var file =
+            await DefaultCacheManager().getSingleFile(widget.url.toString());
+        print(file.path.toString());
+
+        WallpaperManagerFlutter().setwallpaperfromFile(file, location);
+
+        downloading = false;
+        AwesomeDialog(
+          context: context,
+          //customHeader: Image.asset("assets/icon/icon.png"),
+          dialogType: DialogType.SUCCES,
+          animType: AnimType.BOTTOMSLIDE,
+          title: 'Wallpaper Updated',
+          dialogBackgroundColor: Colors.white,
+
+          btnOkOnPress: () {},
+          btnOkColor: backgroundcolor,
+        ).show();
+      } catch (e) {
+        AwesomeDialog(
+          context: context,
+          //customHeader: Image.asset("assets/icon/icon.png"),
+          dialogType: DialogType.ERROR,
+          animType: AnimType.BOTTOMSLIDE,
+          title: 'Error Setting Wallpaper',
+          dialogBackgroundColor: Colors.white,
+
+          btnOkOnPress: () {},
+          btnOkColor: backgroundcolor,
+        ).show();
+      }
+
+      return downloading;
+    }
+    Future<bool> lockscreen() async {
+      try {
+        int location =
+            WallpaperManagerFlutter.LOCK_SCREEN; //can be Home/Lock Screen
+        var file =
+            await DefaultCacheManager().getSingleFile(widget.url.toString());
+        print(file.path.toString());
+
+        WallpaperManagerFlutter().setwallpaperfromFile(file, location);
+
+        downloading = false;
+        AwesomeDialog(
+          context: context,
+          //customHeader: Image.asset("assets/icon/icon.png"),
+          dialogType: DialogType.SUCCES,
+          animType: AnimType.BOTTOMSLIDE,
+          title: 'Wallpaper Updated',
+          dialogBackgroundColor: Colors.white,
+
+          btnOkOnPress: () {},
+          btnOkColor: backgroundcolor,
+        ).show();
+      } catch (e) {
+        AwesomeDialog(
+          context: context,
+          //customHeader: Image.asset("assets/icon/icon.png"),
+          dialogType: DialogType.ERROR,
+          animType: AnimType.BOTTOMSLIDE,
+          title: 'Error Setting Wallpaper',
+          dialogBackgroundColor: Colors.white,
+
+          btnOkOnPress: () {},
+          btnOkColor: backgroundcolor,
+        ).show();
+      }
+
+      return downloading;
+    }
+
     Widget _floatingCollapsed() {
       return Container(
         decoration: BoxDecoration(
@@ -41,15 +163,15 @@ class _WallpaperState extends State<Wallpaper> {
         margin: const EdgeInsets.fromLTRB(5.0, 38.0, 5.0, 0.0),
         child: Center(
             child: InkWell(
-              onTap: (){
-                //todo
-              },
-              child: Icon(
-                      Icons.arrow_upward_sharp,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-            )),
+          onTap: () {
+            //todo
+          },
+          child: Icon(
+            Icons.arrow_upward_sharp,
+            size: 30,
+            color: Colors.white,
+          ),
+        )),
       );
     }
 
@@ -81,40 +203,61 @@ class _WallpaperState extends State<Wallpaper> {
                     print("Save button Clicked");
                   },
                   child: CircleAvatar(
-                      backgroundColor: Colors.black,
+                      backgroundColor: Colors.white,
                       child: Icon(
                         Icons.save_alt,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 35,
                       )),
                 ),
-                InkWell(
-                  onTap: () {},
+                GestureDetector(
+                  onTap: () {
+                    print("Favorite clicked");
+                  },
                   child: CircleAvatar(
-                      backgroundColor: Colors.black,
+                      backgroundColor: Colors.white,
                       child: Icon(
                         Icons.favorite,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 35,
                       )),
                 ),
+                PopupMenuButton(
+                  color: Colors.black,
+                  icon: Icon(Icons.wallpaper,color:Colors.white ,size: 35,),
+                itemBuilder:(context) => [
+                  PopupMenuItem(
+                    child: Text("BOTH SCREEN",style: TextStyle(color: Colors.white),),
+                    value: 1,
+                    onTap: (){
+                      bothscreen();
+
+                    },
+                  ),
+                  PopupMenuItem(
+                    child: Text("HOME SCREEN",style: TextStyle(color: Colors.white)),
+                    value: 2,
+                    onTap: (){
+                      setwallaper();
+                    },
+                  ),
+                  PopupMenuItem(
+
+                    child: Text("LOCK SCREEN",style: TextStyle(color: Colors.white)),
+                    value: 2,
+                    onTap: (){
+                      lockscreen();
+                    },
+                  )
+                ]
+            ),
                 InkWell(
                   onTap: () {},
                   child: CircleAvatar(
-                      backgroundColor: Colors.black,
-                      child: Icon(
-                        Icons.wallpaper,
-                        color: Colors.white,
-                        size: 35,
-                      )),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: CircleAvatar(
-                      backgroundColor: Colors.black,
+                      backgroundColor: Colors.white,
                       child: Icon(
                         Icons.share,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 35,
                       )),
                 ),
@@ -126,10 +269,9 @@ class _WallpaperState extends State<Wallpaper> {
             Text(
               "Creator",
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold
-              ),
+                  color: Colors.white,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -201,11 +343,18 @@ class _WallpaperState extends State<Wallpaper> {
         collapsed: _floatingCollapsed(),
         body: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(widget.url), fit: BoxFit.cover),
+            CachedNetworkImage(
+              imageUrl: widget.url,
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
             Positioned(
               top: 60,

@@ -69,7 +69,7 @@ class _StaggedGridViewState extends State<StaggedGridView> {
       itemCount: images.length,
       itemBuilder: (context, index) {
         return InkWell(
-          onTap: () {
+          onTap: () async{
             //Instead of using normal Navigator.push()
             //I used Navigator.of(context, rootNavigator: true).push(...) so it will not display previous appbar and navbar from stack.
             //If rootNavigator is set to true, the state from the furthest instance of this class is given instead. Useful for pushing contents above all subsequent instances of Navigator.
@@ -77,7 +77,8 @@ class _StaggedGridViewState extends State<StaggedGridView> {
             Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
                 builder: (context) => Wallpaper(
-                  url: images[index]['src']['large'],
+                  pourl:images[index]['src']['portrait'],
+                  url: images[index]['src']['original'],
                   photographer: images[index]['photographer'],
                   photographer_url: images[index]['photographer_url'],
                   avg_color: images[index]['avg_color'],
@@ -99,7 +100,7 @@ class _StaggedGridViewState extends State<StaggedGridView> {
               borderRadius: BorderRadius.circular(10),
               child: FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
-                image: images[index]['src']['large'],
+                image: images[index]['src']['portrait'],
                 fit: BoxFit.cover,
               ),
             ),
