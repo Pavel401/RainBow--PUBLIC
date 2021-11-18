@@ -9,6 +9,10 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:wallpaper_manager_flutter/wallpaper_manager_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:dio/dio.dart';
 
 class Wallpaper extends StatefulWidget {
   String url = " ";
@@ -34,7 +38,6 @@ class Wallpaper extends StatefulWidget {
 }
 
 class _WallpaperState extends State<Wallpaper> {
-  @override
   Widget build(BuildContext context) {
     bool downloading = false;
 
@@ -76,6 +79,7 @@ class _WallpaperState extends State<Wallpaper> {
 
       return downloading;
     }
+
     Future<bool> bothscreen() async {
       try {
         int location =
@@ -114,6 +118,7 @@ class _WallpaperState extends State<Wallpaper> {
 
       return downloading;
     }
+
     Future<bool> lockscreen() async {
       try {
         int location =
@@ -199,8 +204,16 @@ class _WallpaperState extends State<Wallpaper> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
                     print("Save button Clicked");
+                    var status = await Permission.storage.request();
+                    if (await Permission.storage.isPermanentlyDenied) {
+                      // The user opted to never again see the permission request dialog for this
+                      // app. The only way to change the permission's status now is to let the
+                      // user manually enable it in the system settings.
+                      openAppSettings();
+                    }
+                    if (status.isGranted) {}
                   },
                   child: CircleAvatar(
                       backgroundColor: Colors.white,
@@ -223,34 +236,40 @@ class _WallpaperState extends State<Wallpaper> {
                       )),
                 ),
                 PopupMenuButton(
-                  color: Colors.black,
-                  icon: Icon(Icons.wallpaper,color:Colors.white ,size: 35,),
-                itemBuilder:(context) => [
-                  PopupMenuItem(
-                    child: Text("BOTH SCREEN",style: TextStyle(color: Colors.white),),
-                    value: 1,
-                    onTap: (){
-                      bothscreen();
-
-                    },
-                  ),
-                  PopupMenuItem(
-                    child: Text("HOME SCREEN",style: TextStyle(color: Colors.white)),
-                    value: 2,
-                    onTap: (){
-                      setwallaper();
-                    },
-                  ),
-                  PopupMenuItem(
-
-                    child: Text("LOCK SCREEN",style: TextStyle(color: Colors.white)),
-                    value: 2,
-                    onTap: (){
-                      lockscreen();
-                    },
-                  )
-                ]
-            ),
+                    color: Colors.black,
+                    icon: Icon(
+                      Icons.wallpaper,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+                    itemBuilder: (context) => [
+                          PopupMenuItem(
+                            child: Text(
+                              "BOTH SCREEN",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            value: 1,
+                            onTap: () {
+                              bothscreen();
+                            },
+                          ),
+                          PopupMenuItem(
+                            child: Text("HOME SCREEN",
+                                style: TextStyle(color: Colors.white)),
+                            value: 2,
+                            onTap: () {
+                              setwallaper();
+                            },
+                          ),
+                          PopupMenuItem(
+                            child: Text("LOCK SCREEN",
+                                style: TextStyle(color: Colors.white)),
+                            value: 2,
+                            onTap: () {
+                              lockscreen();
+                            },
+                          )
+                        ]),
                 InkWell(
                   onTap: () {},
                   child: CircleAvatar(
@@ -336,42 +355,54 @@ class _WallpaperState extends State<Wallpaper> {
       );
     }
 
-    return Scaffold(
-      body: SlidingUpPanel(
-        renderPanelSheet: false,
-        panel: _floatingPanel(),
-        collapsed: _floatingCollapsed(),
-        body: Stack(
-          children: [
-            CachedNetworkImage(
-              imageUrl: widget.url,
-              imageBuilder: (context, imageProvider) => Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
+    return WillPopScope(
+      onWillPop: ()async {
+        Navigator.pop(context);
+        print("pop");
+        return false;
+      },
+      child: Scaffold(
+        body: SlidingUpPanel(
+          renderPanelSheet: false,
+          panel: _floatingPanel(),
+          collapsed: _floatingCollapsed(),
+          body: Stack(
+            children: [
+              CachedNetworkImage(
+                imageUrl: widget.url,
+                imageBuilder: (context, imageProvider) => Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
-              placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            ),
-            Positioned(
-              top: 60,
-              right: 15,
-              left: 15,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(
-                    Icons.arrow_left,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                ],
+              Positioned(
+                top: 60,
+                right: 15,
+                left: 15,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.arrow_left,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -49,6 +49,10 @@ dependencies:
   cached_network_image: ^3.1.0+1
   progressive_image: ^2.0.0
   wallpaper_manager_flutter: ^0.0.2
+  permission_handler: ^8.2.6
+  image_gallery_saver: ^1.7.1
+  path_provider: ^2.0.6
+  dio: ^4.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
