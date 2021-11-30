@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:rainbow/pages/MAINPAGE.dart';
 import 'package:rainbow/pages/StaggedGridView.dart';
 import 'package:rainbow/pages/searchpage.dart';
+import 'package:rainbow/pages/settings.dart';
+import 'package:rainbow/pages/upload.dart';
 
 class persistent_navbar extends StatelessWidget {
   const persistent_navbar({Key? key}) : super(key: key);
@@ -56,8 +58,8 @@ class persistent_navbar extends StatelessWidget {
       return [
       MAINPAGE(),
       searchpage(),
-      StaggedGridView(),
-      StaggedGridView(),
+      upload(),
+      settings(),
       ];
     }
 

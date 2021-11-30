@@ -64,102 +64,106 @@ class _searchpageState extends State<searchpage> {
       );
     }
 
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          // Replace this container with your Map widget
-          lowerbody(),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context);
+        return false;
+      },
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            // Replace this container with your Map widget
+            lowerbody(),
 
-          Positioned(
-            top: 10,
-            right: 15,
-            left: 15,
-            child: Container(
-              padding: EdgeInsets.all(2),
-              decoration: BoxDecoration(
+            Positioned(
+              top: 10,
+              right: 15,
+              left: 15,
+              child: Container(
+                padding: EdgeInsets.all(2),
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white, width: 2)),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      textAlign: TextAlign.start,
-                      style: TextStyle(color: Colors.white),
-                      controller: _controller,
-                      cursorColor: Colors.white,
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.go,
-                      decoration: InputDecoration(
-                        fillColor: Colors.black,
-                        hoverColor: Colors.black,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusColor: Colors.black,
+                  border: Border.all(color: Colors.white, width: 2),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        textAlign: TextAlign.start,
+                        style: TextStyle(color: Colors.white),
+                        controller: _controller,
+                        cursorColor: Colors.white,
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.go,
+                        decoration: InputDecoration(
+                          fillColor: Colors.black,
+                          hoverColor: Colors.black,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusColor: Colors.black,
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 3.0),
-                    child: InkWell(
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                      onTap: () async {
-                        if (_controller.text.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  search_result(val: _controller.text),
-                            ),
-                          );
-                        } else if (await getInternetUsingInternetConnectivity() ==
-                            false) {
-                          AwesomeDialog(
-                            context: context,
-                            //customHeader: Image.asset("assets/icon/icon.png"),
-                            dialogType: DialogType.ERROR,
-                            animType: AnimType.BOTTOMSLIDE,
-                            title: 'Offline',
+                    Padding(
+                      padding: const EdgeInsets.only(right: 3.0),
+                      child: InkWell(
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ),
+                        onTap: () async {
+                          if (_controller.text.isNotEmpty) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    search_result(val: _controller.text),
+                              ),
+                            );
+                          } else if (await getInternetUsingInternetConnectivity() ==
+                              false) {
+                            AwesomeDialog(
+                              context: context,
+                              //customHeader: Image.asset("assets/icon/icon.png"),
+                              dialogType: DialogType.ERROR,
+                              animType: AnimType.BOTTOMSLIDE,
+                              title: 'Offline',
 
-                            desc: 'Please Connect to Internet Service ',
-                            btnOkOnPress: () {},
-                            btnOkColor: backgroundcolor,
-                            btnOkText: "Close",
-                          )..show();
-                        }
-                          else if(_controller.text.isEmpty){
-                             AwesomeDialog(
-                  context: context,
-                  //customHeader: Image.asset("assets/icon/icon.png"),
-                  dialogType: DialogType.ERROR,  
-                  animType: AnimType.BOTTOMSLIDE,
-                  title: 'No Search Value',
-              btnOkColor: backgroundcolor,
-                  desc:
-                      'Enter some search queries',
-                  btnOkOnPress: () {},
-                )..show();
-
+                              desc: 'Please Connect to Internet Service ',
+                              btnOkOnPress: () {},
+                              btnOkColor: backgroundcolor,
+                              btnOkText: "Close",
+                            )..show();
+                          } else if (_controller.text.isEmpty) {
+                            AwesomeDialog(
+                              context: context,
+                              //customHeader: Image.asset("assets/icon/icon.png"),
+                              dialogType: DialogType.ERROR,
+                              animType: AnimType.BOTTOMSLIDE,
+                              title: 'No Search Value',
+                              btnOkColor: backgroundcolor,
+                              desc: 'Enter some search queries',
+                              btnOkOnPress: () {},
+                            )..show();
                           }
-                      },
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned(
-            top: 65,
-            left: 15,
-            right: 15,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: wrapWidget(),
+            Positioned(
+              top: 65,
+              left: 15,
+              right: 15,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: wrapWidget(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

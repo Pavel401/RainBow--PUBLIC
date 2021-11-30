@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:typed_data';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:rainbow/constants/constraints.dart';
-
+import 'package:rainbow/model/VARIABLES.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -11,7 +13,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:wallpaper_manager_flutter/wallpaper_manager_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 
 class Wallpaper extends StatefulWidget {
@@ -40,6 +42,7 @@ class Wallpaper extends StatefulWidget {
 class _WallpaperState extends State<Wallpaper> {
   Widget build(BuildContext context) {
     bool downloading = false;
+    bool isLoading = false;
 
     Future<bool> setwallaper() async {
       try {
@@ -90,7 +93,7 @@ class _WallpaperState extends State<Wallpaper> {
 
         WallpaperManagerFlutter().setwallpaperfromFile(file, location);
 
-        downloading = false;
+        downloading = true;
         AwesomeDialog(
           context: context,
           //customHeader: Image.asset("assets/icon/icon.png"),
@@ -203,26 +206,73 @@ class _WallpaperState extends State<Wallpaper> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InkWell(
-                  onTap: () async {
-                    print("Save button Clicked");
-                    var status = await Permission.storage.request();
-                    if (await Permission.storage.isPermanentlyDenied) {
-                      // The user opted to never again see the permission request dialog for this
-                      // app. The only way to change the permission's status now is to let the
-                      // user manually enable it in the system settings.
-                      openAppSettings();
-                    }
-                    if (status.isGranted) {}
-                  },
-                  child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: Icon(
-                        Icons.save_alt,
-                        color: Colors.black,
-                        size: 35,
-                      )),
-                ),
+                 InkWell(
+                        onTap: () async {
+                          print("Save button Clicked");
+                          var status = await Permission.storage.request();
+                          if (await Permission.storage.isPermanentlyDenied) {
+                            // The user opted to never again see the permission request dialog for this
+                            // app. The only way to change the permission's status now is to let the
+                            // user manually enable it in the system settings.
+                            openAppSettings();
+                          }
+
+                          if (status.isGranted) {
+                            try {
+                             setState(() {
+                               isLoading=true;
+                             });
+                              await Future.delayed(const Duration(seconds: 5));
+
+                              setState(() {
+                                isLoading = false;
+                              });
+
+                              var response = await Dio().get(
+                                  widget.url.toString(),
+                                  options: Options(
+                                      responseType: ResponseType.bytes));
+                              final image_ = await ImageGallerySaver.saveImage(
+                                  Uint8List.fromList(response.data),
+                                  quality: 100,
+                                  name: "hello");
+
+                              AwesomeDialog(
+                                context: context,
+                                //customHeader: Image.asset("assets/icon/icon.png"),
+                                dialogType: DialogType.SUCCES,
+                                animType: AnimType.BOTTOMSLIDE,
+                                title: 'Wallpaper is downloaded',
+
+                                desc:
+                                    'Wallaper is saved in ' + image_.toString(),
+
+                                btnOkOnPress: () {},
+                              ).show();
+                            } catch (e) {
+                              AwesomeDialog(
+                                context: context,
+                                //customHeader: Image.asset("assets/icon/icon.png"),
+                                dialogType: DialogType.WARNING,
+                                animType: AnimType.BOTTOMSLIDE,
+                                title: 'Wallpaper is failed to download',
+
+                                desc: 'There are some errors' + e.toString(),
+
+                                btnOkOnPress: () {},
+                              ).show();
+                            }
+                          }
+                        },
+                        child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: Icon(
+                              Icons.save_alt,
+                              color: Colors.black,
+                              size: 35,
+                            )),
+                      ),
+                    
                 GestureDetector(
                   onTap: () {
                     print("Favorite clicked");
@@ -356,7 +406,7 @@ class _WallpaperState extends State<Wallpaper> {
     }
 
     return WillPopScope(
-      onWillPop: ()async {
+      onWillPop: () async {
         Navigator.pop(context);
         print("pop");
         return false;
@@ -378,7 +428,8 @@ class _WallpaperState extends State<Wallpaper> {
                     ),
                   ),
                 ),
-                placeholder: (context, url) => CircularProgressIndicator(),
+                placeholder: (context, url) =>
+                    Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
               Positioned(
