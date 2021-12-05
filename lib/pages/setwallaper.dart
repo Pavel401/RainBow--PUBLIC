@@ -39,6 +39,7 @@ class _WallpaperState extends State<Wallpaper> {
   Widget build(BuildContext context) {
     bool downloading = false;
     bool isLoading = false;
+    String address="";
 
     Future<bool> setwallaper() async {
       try {
@@ -215,21 +216,30 @@ class _WallpaperState extends State<Wallpaper> {
 
                     if (status.isGranted) {
                       try {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        await Future.delayed(const Duration(seconds: 5));
+                         AwesomeDialog(
+                          context: context,
+                          //customHeader: Image.asset("assets/icon/icon.png"),
+                          dialogType: DialogType.NO_HEADER,
+                          animType: AnimType.BOTTOMSLIDE,
+                          autoHide: Duration(seconds: 5),
+                          title: 'Wallpaper is Downloading',
+                          customHeader: Icon(Icons.cached),
+                          dismissOnBackKeyPress: false,
 
-                        setState(() {
-                          isLoading = false;
-                        });
+                        
 
+                        ).show();
                         var response = await Dio().get(widget.url.toString(),
                             options: Options(responseType: ResponseType.bytes));
                         final image_ = await ImageGallerySaver.saveImage(
                             Uint8List.fromList(response.data),
                             quality: 100,
                             name: "hello");
+                             await Future.delayed(const Duration(seconds: 5));
+
+                      
+
+                        
 
                         AwesomeDialog(
                           context: context,
