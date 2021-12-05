@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:rainbow/pages/search_result.dart';
 
 class categoris extends StatefulWidget {
   const categoris({Key? key}) : super(key: key);
@@ -23,6 +24,11 @@ class _categorisState extends State<categoris> {
             InkWell(
               onTap: () {
                 print("Nature is clicked");
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => search_result(val: 'nature'),
+                  ),
+                );
               },
               child: Card(
                 margin: EdgeInsets.all(5),
@@ -67,7 +73,8 @@ class _categorisState extends State<categoris> {
             ),
             InkWell(
               onTap: () {
-                print("Nature is clicked");
+                print("Abstract is clicked");
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> search_result(val: 'abstract wallpaper')));
               },
               child: Card(
                 margin: EdgeInsets.all(5),
@@ -112,7 +119,8 @@ class _categorisState extends State<categoris> {
             ),
             InkWell(
               onTap: () {
-                print("Nature is clicked");
+                print("Amoled is clicked");
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> search_result(val: 'amoled wallpaper black dark')));
               },
               child: Card(
                 margin: EdgeInsets.all(5),
@@ -159,6 +167,8 @@ class _categorisState extends State<categoris> {
             InkWell(
               onTap: () {
                 print("Nature is clicked");
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> search_result(val: 'fluid art')));
+
               },
               child: Card(
                 margin: EdgeInsets.all(5),
@@ -205,7 +215,9 @@ class _categorisState extends State<categoris> {
             ),
             InkWell(
               onTap: () {
-                print("Nature is clicked");
+                print("Motivation is clicked");
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> search_result(val: 'motivational')));
+
               },
               child: Card(
                 margin: EdgeInsets.all(5),
@@ -249,14 +261,17 @@ class _categorisState extends State<categoris> {
             ),
             InkWell(
               onTap: () {
-                print("Nature is clicked");
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> search_result(val: 'islamic')));
+
+               // print(" is clicked");
               },
               child: Card(
                 margin: EdgeInsets.all(5),
                 color: Colors.transparent,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    side: BorderSide(color: Colors.white, width: 3),),
+                  borderRadius: BorderRadius.circular(15),
+                  side: BorderSide(color: Colors.white, width: 3),
+                ),
                 child: Container(
                   height: 200,
                   width: 400,
@@ -293,7 +308,9 @@ class _categorisState extends State<categoris> {
             ),
             InkWell(
               onTap: () {
-                print("Nature is clicked");
+                print("hindu is clicked");
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> search_result(val: 'hindu')));
+
               },
               child: Card(
                 margin: EdgeInsets.all(5),
@@ -316,7 +333,7 @@ class _categorisState extends State<categoris> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          "Hindu",
+                          "Hinduism",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 40,

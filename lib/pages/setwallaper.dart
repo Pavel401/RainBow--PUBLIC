@@ -38,7 +38,6 @@ class Wallpaper extends StatefulWidget {
 class _WallpaperState extends State<Wallpaper> {
   Widget build(BuildContext context) {
     bool downloading = false;
-    bool isLoading = false;
     String address="";
 
     Future<bool> setwallaper() async {
