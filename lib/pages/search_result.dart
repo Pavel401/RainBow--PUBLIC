@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new
 
-import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 

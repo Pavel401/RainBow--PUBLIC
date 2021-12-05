@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter/material.dart';
 import 'package:rainbow/pages/MAINPAGE.dart';
-import 'package:rainbow/pages/StaggedGridView.dart';
 import 'package:rainbow/pages/searchpage.dart';
 import 'package:rainbow/pages/settings.dart';
 import 'package:rainbow/pages/upload.dart';

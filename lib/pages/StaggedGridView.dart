@@ -11,7 +11,6 @@ import 'package:rainbow/pages/setwallaper.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:rainbow/main.dart';
 
-bool _showAppBar = true;
 
 class StaggedGridView extends StatefulWidget {
   const StaggedGridView({Key? key}) : super(key: key);
@@ -25,7 +24,6 @@ class _StaggedGridViewState extends State<StaggedGridView> {
   int page = 1;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -69,7 +67,7 @@ class _StaggedGridViewState extends State<StaggedGridView> {
       itemCount: images.length,
       itemBuilder: (context, index) {
         return InkWell(
-          onTap: () async{
+          onTap: () async {
             //Instead of using normal Navigator.push()
             //I used Navigator.of(context, rootNavigator: true).push(...) so it will not display previous appbar and navbar from stack.
             //If rootNavigator is set to true, the state from the furthest instance of this class is given instead. Useful for pushing contents above all subsequent instances of Navigator.
@@ -77,14 +75,15 @@ class _StaggedGridViewState extends State<StaggedGridView> {
             Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
                 builder: (context) => Wallpaper(
-                  pourl:images[index]['src']['portrait'],
+                  pourl: images[index]['src']['portrait'],
                   url: images[index]['src']['original'],
                   photographer: images[index]['photographer'],
                   photographer_url: images[index]['photographer_url'],
                   avg_color: images[index]['avg_color'],
-                  width: images[index]['width'] ,
-                  height:  images[index]['height'],
+                  width: images[index]['width'],
+                  height: images[index]['height'],
                 ),
+                
               ),
             );
           },

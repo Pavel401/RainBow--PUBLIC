@@ -28,20 +28,17 @@ class settings extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-
-                 AwesomeDialog(
+                AwesomeDialog(
                   context: context,
                   //customHeader: Image.asset("assets/icon/icon.png"),
-                  dialogType: DialogType.ERROR,  
+                  dialogType: DialogType.ERROR,
                   animType: AnimType.BOTTOMSLIDE,
                   title: 'Feature Is Still In Developement',
-                    dialogBackgroundColor: Colors.white,
+                  dialogBackgroundColor: Colors.white,
 
-                  desc:
-                      'Comeback Later',
+                  desc: 'Comeback Later',
                   btnOkOnPress: () {},
                   btnOkColor: backgroundcolor,
-                  
                 )..show();
               },
               icon: Icon(
