@@ -47,7 +47,7 @@ class _search_resultState extends State<search_result> {
             '&per_page=80'),
         headers: {
           'Authorization':
-              '563492ad6f91700001000001aaeacbabef4c4c6085b4432c1b2a287f'
+              api
         }).then((value) {
       output = jsonDecode(value.body);
       //print(result);
