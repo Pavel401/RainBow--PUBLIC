@@ -100,7 +100,7 @@ class _StaggedGridViewState extends State<StaggedGridView> {
             ),
             child: ClipRRect(
               
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(15),
               child: FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
                 image: images[index]['src']['portrait'],
