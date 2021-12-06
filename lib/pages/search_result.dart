@@ -121,7 +121,7 @@ class _search_resultState extends State<search_result> {
               ),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(15),
               child: FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
                 image: list1[index]['src']['large'],
