@@ -24,13 +24,12 @@ class search_result extends StatefulWidget {
 class _search_resultState extends State<search_result> {
   ScrollController _scrollController = ScrollController();
   int page = 1;
-  
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-   
-    
+
     fetchapis();
 
     _scrollController.addListener(() {
@@ -84,54 +83,57 @@ class _search_resultState extends State<search_result> {
       print(list1.length);
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
-    return  StaggeredGridView.countBuilder(
-            controller: _scrollController,
-            crossAxisCount: 2,
-            mainAxisSpacing: 12,
-            itemCount: list1.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: (){
-                  Navigator.of(context, rootNavigator: true).push(
+    return StaggeredGridView.countBuilder(
+      controller: _scrollController,
+      crossAxisCount: 2,
+      mainAxisSpacing: 12,
+      itemCount: list1.length,
+      itemBuilder: (context, index) {
+        return InkWell(
+          onTap: () {
+            Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
                 builder: (context) => Wallpaper(
-                  pourl:list1[index]['src']['portrait'],
+                  pourl: list1[index]['src']['portrait'],
                   url: list1[index]['src']['original'],
                   photographer: list1[index]['photographer'],
                   photographer_url: list1[index]['photographer_url'],
                   avg_color: list1[index]['avg_color'],
-                  width: list1[index]['width'] ,
-                  height:  list1[index]['height'],
+                  width: list1[index]['width'],
+                  height: list1[index]['height'],
                 ),
               ),
             );
-                },
-                child: Container(
-                  margin: EdgeInsets.only(left: 5, right: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15),
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image: list1[index]['src']['large'],
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              );
-            },
-            staggeredTileBuilder: (int index) {
-              return StaggeredTile.count(1, index.isEven ? 1.9 : 1.9);
-            },
-          );
+          },
+          child: Container(
+            margin: EdgeInsets.only(left: 5, right: 5),
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              border: Border.all(
+                color: Colors.white,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: list1[index]['src']['large'],
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        );
+      },
+      staggeredTileBuilder: (int index) {
+        return StaggeredTile.count(1, index.isEven ? 1.9 : 1.9);
+      },
+    );
   }
 }
